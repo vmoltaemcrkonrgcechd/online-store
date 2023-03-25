@@ -1,0 +1,23 @@
+definitions:
+  entities.City:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /cities:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.City'
+            type: array
+      tags:
+      - города
+swagger: "2.0"
