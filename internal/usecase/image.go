@@ -6,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/utils"
 	"github.com/vmoltaemcrkonrgcechd/online-store/internal/usecase/repo"
+	"io"
 	"log"
 	"mime/multipart"
 	"net/http"
@@ -66,20 +67,23 @@ func (uc ImageUseCase) getTypeAndExt(contentType string) (string, string) {
 }
 
 func (uc ImageUseCase) readHeader(header *multipart.FileHeader) ([]byte, error) {
-	userFriendlyErr := fiber.NewError(http.StatusInternalServerError,
-		"произошла ошибка при чтении файла")
-
 	image, err := header.Open()
 	if err != nil {
 		log.Println(err)
-		return nil, userFriendlyErr
+		return nil, fiber.NewError(http.StatusInternalServerError,
+			"произошла ошибка при открытии файла")
 	}
 	defer image.Close()
 
+	return uc.readFile(image)
+}
+
+func (uc ImageUseCase) readFile(file io.Reader) ([]byte, error) {
 	buf := new(bytes.Buffer)
-	if _, err = buf.ReadFrom(image); err != nil {
+	if _, err := buf.ReadFrom(file); err != nil {
 		log.Println(err)
-		return nil, userFriendlyErr
+		return nil, fiber.NewError(http.StatusInternalServerError,
+			"произошла ошибка при чтении файла")
 	}
 
 	return buf.Bytes(), nil
