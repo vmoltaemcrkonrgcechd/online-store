@@ -7,8 +7,12 @@ import (
 	"github.com/vmoltaemcrkonrgcechd/online-store/internal/usecase"
 )
 
-func WithRouter(app *fiber.App, cityUC usecase.CityUseCase) {
+func WithRouter(app *fiber.App,
+	cityUC usecase.CityUseCase,
+	imageUC usecase.ImageUseCase,
+) {
 	app.Get("/swagger-ui/*", swagger.New(swagger.ConfigDefault))
 
 	withCityRoutes(app, cityUC)
+	withImageRoutes(app, imageUC)
 }

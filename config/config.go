@@ -6,8 +6,9 @@ import (
 )
 
 type Config struct {
-	HTTPAddr string `yaml:"httpAddr"`
-	PgURL    string `env:"PG_URL"`
+	HTTPAddr   string `yaml:"httpAddr"`
+	PgURL      string `env:"PG_URL"`
+	FileSystem string `yaml:"fileSystem"`
 }
 
 func New() (*Config, error) {

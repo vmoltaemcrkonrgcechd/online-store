@@ -22,6 +22,7 @@ func Run(cfg *config.Config) error {
 
 	routes.WithRouter(app,
 		usecase.NewCityUseCase(repo.NewCityRepo(pq)),
+		usecase.NewImageUseCase(repo.NewImageRepo(pq), cfg.FileSystem),
 	)
 
 	return app.Listen(cfg.HTTPAddr)

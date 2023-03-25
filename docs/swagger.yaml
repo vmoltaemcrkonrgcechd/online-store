@@ -20,4 +20,26 @@ paths:
             type: array
       tags:
       - города
+  /images:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - collectionFormat: multi
+        description: изображения
+        in: formData
+        items:
+          type: file
+        name: images
+        required: true
+        type: array
+      responses:
+        "201":
+          description: Created
+          schema:
+            items:
+              type: string
+            type: array
+      tags:
+      - изображения
 swagger: "2.0"
