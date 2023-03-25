@@ -60,6 +60,23 @@ func (uc ImageUseCase) SaveImages(images []*multipart.FileHeader) ([]string, err
 	return imagePaths, nil
 }
 
+func (uc ImageUseCase) GetImage(path string) ([]byte, error) {
+	image, err := os.Open(fmt.Sprintf("%s\\%s", uc.dir, path))
+	if err != nil {
+		log.Println(err)
+		if err == os.ErrNotExist {
+			return nil, fiber.NewError(http.StatusBadRequest,
+				"изображения не существует")
+		}
+
+		return nil, fiber.NewError(http.StatusInternalServerError,
+			"произошла ошибка при получении изображения")
+	}
+	defer image.Close()
+
+	return uc.readFile(image)
+}
+
 func (uc ImageUseCase) getTypeAndExt(contentType string) (string, string) {
 	t := strings.Split(contentType, "/")
 

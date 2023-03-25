@@ -14,6 +14,7 @@ type imageRoutes struct {
 func withImageRoutes(app *fiber.App, uc usecase.ImageUseCase) {
 	r := imageRoutes{uc}
 	app.Post("/images", r.uploadImages)
+	app.Get("/images/:path", r.getImage)
 }
 
 //	@tags		изображения
@@ -35,4 +36,24 @@ func (r imageRoutes) uploadImages(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.JSON(imagePaths)
+}
+
+//	@tags	изображения
+//	@param	path	path	string	true	"пути к изображению"
+//	@router	/images/{path} [get]
+func (r imageRoutes) getImage(ctx *fiber.Ctx) error {
+	data, err := r.uc.GetImage(ctx.Params("path"))
+	if err != nil {
+		return err
+	}
+
+	if _, err = ctx.Write(data); err != nil {
+		log.Println(err)
+		return fiber.NewError(http.StatusInternalServerError,
+			"произошла ошибка при получении изображения")
+	}
+
+	ctx.Set("Content-Type", "application/octet-stream")
+
+	return nil
 }

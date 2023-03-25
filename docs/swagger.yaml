@@ -42,4 +42,15 @@ paths:
             type: array
       tags:
       - изображения
+  /images/{path}:
+    get:
+      parameters:
+      - description: пути к изображению
+        in: path
+        name: path
+        required: true
+        type: string
+      responses: {}
+      tags:
+      - изображения
 swagger: "2.0"

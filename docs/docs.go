@@ -66,6 +66,23 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/images/{path}": {
+            "get": {
+                "tags": [
+                    "изображения"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "пути к изображению",
+                        "name": "path",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
         }
     },
     "definitions": {
