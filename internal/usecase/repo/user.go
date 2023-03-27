@@ -1,6 +1,7 @@
 package repo
 
 import (
+	"database/sql"
 	"github.com/gofiber/fiber/v2"
 	"github.com/vmoltaemcrkonrgcechd/online-store/internal/entities"
 	"github.com/vmoltaemcrkonrgcechd/online-store/pkg/pg"
@@ -39,4 +40,25 @@ func (r UserRepo) SaveUser(user entities.UserDTO) (id string, err error) {
 	}
 
 	return id, nil
+}
+
+func (r UserRepo) UserByCredentials(credentials entities.Credentials) (
+	user entities.User, err error) {
+	if err = r.Sq.Select("user_id", "username", "city_id", "city_name", "image_path", "role").
+		From("\"user\"").
+		Join("city USING (city_id)").
+		Where("username = ? AND password = ?", credentials.Username, credentials.Password).
+		QueryRow().Scan(&user.ID, &user.Username, &user.City.ID,
+		&user.City.Name, &user.ImagePath, &user.Role); err != nil {
+		if err == sql.ErrNoRows {
+			return user, fiber.NewError(http.StatusBadRequest,
+				"неправильный логин или пароль")
+		}
+
+		log.Println(err)
+		return user, fiber.NewError(http.StatusInternalServerError,
+			"произошла ошибка при входе в систему")
+	}
+
+	return user, nil
 }

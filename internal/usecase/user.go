@@ -18,7 +18,7 @@ func NewUserUseCase(repo repo.UserRepo) UserUseCase {
 }
 
 func (uc UserUseCase) SingUp(user entities.UserDTO) (string, error) {
-	// TODO добавить проверку пользователя.
+	// TODO добавить проверку.
 
 	//проверить, есть ли пользователь с таким именем.
 	ok, err := uc.repo.UserExists(user.Username)
@@ -41,6 +41,14 @@ func (uc UserUseCase) SingUp(user entities.UserDTO) (string, error) {
 	}
 
 	return id, nil
+}
+
+func (uc UserUseCase) SignIn(credentials entities.Credentials) (entities.User, error) {
+	// TODO добавить проверку.
+
+	credentials.Password = uc.hash(credentials.Password)
+
+	return uc.repo.UserByCredentials(credentials)
 }
 
 func (uc UserUseCase) hash(password string) string {

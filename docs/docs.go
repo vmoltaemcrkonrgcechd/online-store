@@ -85,6 +85,25 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/sign-in": {
+            "post": {
+                "tags": [
+                    "пользователи"
+                ],
+                "parameters": [
+                    {
+                        "description": "реквизиты для входа",
+                        "name": "credentials",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.Credentials"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/sign-up": {
             "post": {
                 "tags": [
@@ -113,6 +132,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.Credentials": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }

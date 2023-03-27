@@ -15,3 +15,8 @@ type UserDTO struct {
 	ImagePath *string `json:"imagePath"`
 	Role      string  `json:"role"`
 }
+
+type Credentials struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}

@@ -13,16 +13,17 @@ type userRoutes struct {
 	store *sessionstore.SessionStore
 }
 
-//@tags пользователи
-//@param user body entities.UserDTO true "пользователь"
-//@router /sign-up [post]
 func withUserRoutes(app *fiber.App,
 	uc usecase.UserUseCase,
 	store *sessionstore.SessionStore) {
 	r := userRoutes{uc, store}
 	app.Post("/sign-up", r.signUp)
+	app.Post("/sign-in", r.signIn)
 }
 
+//@tags пользователи
+//@param user body entities.UserDTO true "пользователь"
+//@router /sign-up [post]
 func (r userRoutes) signUp(ctx *fiber.Ctx) error {
 	var user entities.UserDTO
 
@@ -42,4 +43,28 @@ func (r userRoutes) signUp(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.Status(http.StatusCreated).SendString(id)
+}
+
+//@tags пользователи
+//@param credentials body entities.Credentials true "реквизиты для входа"
+//@router /sign-in [post]
+func (r userRoutes) signIn(ctx *fiber.Ctx) error {
+	var credentials entities.Credentials
+
+	err := ctx.BodyParser(&credentials)
+	if err != nil {
+		return fiber.NewError(http.StatusBadRequest, "неверный json")
+	}
+
+	var user entities.User
+	if user, err = r.uc.SignIn(credentials); err != nil {
+		return err
+	}
+
+	if err = r.store.Set(ctx, user.ID, user.Role); err != nil {
+		return fiber.NewError(http.StatusInternalServerError,
+			"произошла ошибка при настройке сеанса")
+	}
+
+	return ctx.JSON(user)
 }
