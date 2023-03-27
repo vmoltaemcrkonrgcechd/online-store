@@ -6,6 +6,19 @@ definitions:
       name:
         type: string
     type: object
+  entities.UserDTO:
+    properties:
+      cityID:
+        type: string
+      imagePath:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -53,4 +66,16 @@ paths:
       responses: {}
       tags:
       - изображения
+  /sign-up:
+    post:
+      parameters:
+      - description: пользователь
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entities.UserDTO'
+      responses: {}
+      tags:
+      - пользователи
 swagger: "2.0"

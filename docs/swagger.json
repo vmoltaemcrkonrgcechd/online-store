@@ -72,6 +72,25 @@
                 ],
                 "responses": {}
             }
+        },
+        "/sign-up": {
+            "post": {
+                "tags": [
+                    "пользователи"
+                ],
+                "parameters": [
+                    {
+                        "description": "пользователь",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.UserDTO"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
         }
     },
     "definitions": {
@@ -82,6 +101,26 @@
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.UserDTO": {
+            "type": "object",
+            "properties": {
+                "cityID": {
+                    "type": "string"
+                },
+                "imagePath": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }
