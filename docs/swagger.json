@@ -117,6 +117,25 @@
                 "responses": {}
             }
         },
+        "/products": {
+            "post": {
+                "tags": [
+                    "продукты"
+                ],
+                "parameters": [
+                    {
+                        "description": "продукт",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.ProductDTO"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/sign-in": {
             "post": {
                 "tags": [
@@ -214,6 +233,35 @@
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.ProductDTO": {
+            "type": "object",
+            "properties": {
+                "categoryID": {
+                    "type": "string"
+                },
+                "colorID": {
+                    "type": "string"
+                },
+                "imagePaths": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "unitPrice": {
+                    "type": "integer"
+                },
+                "unitsInStock": {
+                    "type": "integer"
+                },
+                "userID": {
                     "type": "string"
                 }
             }

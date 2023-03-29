@@ -27,6 +27,25 @@ definitions:
       username:
         type: string
     type: object
+  entities.ProductDTO:
+    properties:
+      categoryID:
+        type: string
+      colorID:
+        type: string
+      imagePaths:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      unitPrice:
+        type: integer
+      unitsInStock:
+        type: integer
+      userID:
+        type: string
+    type: object
   entities.UserDTO:
     properties:
       cityID:
@@ -114,6 +133,18 @@ paths:
       responses: {}
       tags:
       - пользователи
+  /products:
+    post:
+      parameters:
+      - description: продукт
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/entities.ProductDTO'
+      responses: {}
+      tags:
+      - продукты
   /sign-in:
     post:
       parameters:

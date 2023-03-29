@@ -8,6 +8,7 @@ type Product struct {
 	Category     Category `json:"category"`
 	UnitPrice    uint     `json:"unitPrice"`
 	UnitsInStock uint     `json:"unitsInStock"`
+	ImagePaths   []string `json:"imagePaths"`
 }
 
 type ProductDTO struct {
