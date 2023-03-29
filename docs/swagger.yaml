@@ -6,6 +6,13 @@ definitions:
       name:
         type: string
     type: object
+  entities.Color:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
   entities.Credentials:
     properties:
       password:
@@ -40,6 +47,17 @@ paths:
             type: array
       tags:
       - города
+  /colors:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.Color'
+            type: array
+      tags:
+      - цвета
   /images:
     post:
       consumes:

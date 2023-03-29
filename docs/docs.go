@@ -34,6 +34,24 @@ const docTemplate = `{
                 }
             }
         },
+        "/colors": {
+            "get": {
+                "tags": [
+                    "цвета"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entities.Color"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/images": {
             "post": {
                 "consumes": [
@@ -151,6 +169,17 @@ const docTemplate = `{
     },
     "definitions": {
         "entities.City": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.Color": {
             "type": "object",
             "properties": {
                 "id": {
