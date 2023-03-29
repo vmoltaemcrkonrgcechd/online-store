@@ -19,6 +19,7 @@ func withUserRoutes(app *fiber.App,
 	r := userRoutes{uc, store}
 	app.Post("/sign-up", r.signUp)
 	app.Post("/sign-in", r.signIn)
+	app.Get("/users/:id", store.Check("buyer"), r.userByID)
 }
 
 //@tags пользователи
@@ -64,6 +65,18 @@ func (r userRoutes) signIn(ctx *fiber.Ctx) error {
 	if err = r.store.Set(ctx, user.ID, user.Role); err != nil {
 		return fiber.NewError(http.StatusInternalServerError,
 			"произошла ошибка при настройке сеанса")
+	}
+
+	return ctx.JSON(user)
+}
+
+//@tags пользователи
+//@param id path string true "идентификатор"
+//@router /users/{id} [get]
+func (r userRoutes) userByID(ctx *fiber.Ctx) error {
+	user, err := r.uc.UserByID(ctx.Params("id"))
+	if err != nil {
+		return err
 	}
 
 	return ctx.JSON(user)

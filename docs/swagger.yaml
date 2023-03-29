@@ -97,4 +97,15 @@ paths:
       responses: {}
       tags:
       - пользователи
+  /users/{id}:
+    get:
+      parameters:
+      - description: идентификатор
+        in: path
+        name: id
+        required: true
+        type: string
+      responses: {}
+      tags:
+      - пользователи
 swagger: "2.0"

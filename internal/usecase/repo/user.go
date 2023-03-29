@@ -62,3 +62,24 @@ func (r UserRepo) UserByCredentials(credentials entities.Credentials) (
 
 	return user, nil
 }
+
+func (r UserRepo) UserByID(id string) (user entities.User, err error) {
+	if err = r.Sq.Select("user_id", "username", "city_id", "city_name", "image_path", "role").
+		From("\"user\"").
+		Join("city USING (city_id)").
+		Where("user_id = ?", id).
+		QueryRow().Scan(&user.ID, &user.Username, &user.City.ID,
+		&user.City.Name, &user.ImagePath, &user.Role); err != nil {
+		log.Println(err)
+
+		if err == sql.ErrNoRows {
+			return user, fiber.NewError(http.StatusBadRequest,
+				"такого пользователя не существует")
+		}
+
+		return user, fiber.NewError(http.StatusInternalServerError,
+			"произошла ошибка при получении пользователя")
+	}
+
+	return user, nil
+}

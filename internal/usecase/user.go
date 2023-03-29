@@ -51,6 +51,10 @@ func (uc UserUseCase) SignIn(credentials entities.Credentials) (entities.User, e
 	return uc.repo.UserByCredentials(credentials)
 }
 
+func (uc UserUseCase) UserByID(id string) (entities.User, error) {
+	return uc.repo.UserByID(id)
+}
+
 func (uc UserUseCase) hash(password string) string {
 	hash := sha256.New()
 	hash.Write([]byte(password))

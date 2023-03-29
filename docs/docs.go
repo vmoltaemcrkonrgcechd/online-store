@@ -122,6 +122,23 @@ const docTemplate = `{
                 ],
                 "responses": {}
             }
+        },
+        "/users/{id}": {
+            "get": {
+                "tags": [
+                    "пользователи"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "идентификатор",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
         }
     },
     "definitions": {
