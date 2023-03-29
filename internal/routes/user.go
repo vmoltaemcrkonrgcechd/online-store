@@ -20,6 +20,7 @@ func withUserRoutes(app *fiber.App,
 	app.Post("/sign-up", r.signUp)
 	app.Post("/sign-in", r.signIn)
 	app.Get("/users/:id", store.Check("buyer"), r.userByID)
+	app.Get("/meDetails", store.Check("buyer"), r.meDetails)
 }
 
 //@tags пользователи
@@ -75,6 +76,19 @@ func (r userRoutes) signIn(ctx *fiber.Ctx) error {
 //@router /users/{id} [get]
 func (r userRoutes) userByID(ctx *fiber.Ctx) error {
 	user, err := r.uc.UserByID(ctx.Params("id"))
+	if err != nil {
+		return err
+	}
+
+	return ctx.JSON(user)
+}
+
+//@tags пользователи
+//@router /meDetails [get]
+func (r userRoutes) meDetails(ctx *fiber.Ctx) error {
+	id, _ := r.store.ID(ctx)
+
+	user, err := r.uc.UserByID(id)
 	if err != nil {
 		return err
 	}

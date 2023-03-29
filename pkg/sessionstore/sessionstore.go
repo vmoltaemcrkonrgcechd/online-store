@@ -63,3 +63,12 @@ func (s *SessionStore) Check(expected string) fiber.Handler {
 		}
 	}
 }
+
+func (s *SessionStore) ID(ctx *fiber.Ctx) (string, error) {
+	sess, err := s.Get(ctx)
+	if err != nil {
+		return "", err
+	}
+
+	return sess.Get("id").(string), nil
+}

@@ -85,6 +85,14 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/meDetails": {
+            "get": {
+                "tags": [
+                    "пользователи"
+                ],
+                "responses": {}
+            }
+        },
         "/sign-in": {
             "post": {
                 "tags": [

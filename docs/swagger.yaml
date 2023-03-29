@@ -73,6 +73,11 @@ paths:
       responses: {}
       tags:
       - изображения
+  /meDetails:
+    get:
+      responses: {}
+      tags:
+      - пользователи
   /sign-in:
     post:
       parameters:
