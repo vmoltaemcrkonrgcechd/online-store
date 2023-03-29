@@ -26,6 +26,7 @@ func Run(cfg *config.Config) error {
 		usecase.NewImageUseCase(repo.NewImageRepo(pq), cfg.FileSystem),
 		usecase.NewUserUseCase(repo.NewUserRepo(pq)),
 		usecase.NewColorUseCase(repo.NewColorRepo(pq)),
+		usecase.NewCategoryUseCase(repo.NewCategoryRepo(pq)),
 		sessionstore.New(),
 	)
 

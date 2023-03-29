@@ -13,6 +13,7 @@ func WithRouter(app *fiber.App,
 	imageUC usecase.ImageUseCase,
 	userUC usecase.UserUseCase,
 	colorUC usecase.ColorUseCase,
+	categoryUC usecase.CategoryUseCase,
 	store *sessionstore.SessionStore,
 ) {
 	app.Get("/swagger-ui/*", swagger.New(swagger.ConfigDefault))
@@ -21,4 +22,5 @@ func WithRouter(app *fiber.App,
 	withImageRoutes(app, imageUC)
 	withUserRoutes(app, userUC, store)
 	withColorRoutes(app, colorUC, store)
+	withCategoryRoutes(app, categoryUC, store)
 }

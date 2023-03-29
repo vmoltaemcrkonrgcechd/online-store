@@ -16,6 +16,24 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/categories": {
+            "get": {
+                "tags": [
+                    "категории"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entities.Category"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/cities": {
             "get": {
                 "tags": [
@@ -168,6 +186,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "entities.Category": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "entities.City": {
             "type": "object",
             "properties": {
