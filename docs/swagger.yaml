@@ -1,4 +1,13 @@
 definitions:
+  entities.AllProductsDTO:
+    properties:
+      products:
+        items:
+          $ref: '#/definitions/entities.Product'
+        type: array
+      quantity:
+        type: integer
+    type: object
   entities.Category:
     properties:
       id:
@@ -27,6 +36,27 @@ definitions:
       username:
         type: string
     type: object
+  entities.Product:
+    properties:
+      category:
+        $ref: '#/definitions/entities.Category'
+      color:
+        $ref: '#/definitions/entities.Color'
+      id:
+        type: string
+      imagePaths:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      unitPrice:
+        type: integer
+      unitsInStock:
+        type: integer
+      user:
+        $ref: '#/definitions/entities.User'
+    type: object
   entities.ProductDTO:
     properties:
       categoryID:
@@ -44,6 +74,19 @@ definitions:
       unitsInStock:
         type: integer
       userID:
+        type: string
+    type: object
+  entities.User:
+    properties:
+      city:
+        $ref: '#/definitions/entities.City'
+      id:
+        type: string
+      imagePath:
+        type: string
+      role:
+        type: string
+      username:
         type: string
     type: object
   entities.UserDTO:
@@ -134,6 +177,14 @@ paths:
       tags:
       - пользователи
   /products:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.AllProductsDTO'
+      tags:
+      - продукты
     post:
       parameters:
       - description: продукт

@@ -1,14 +1,14 @@
 package entities
 
 type Product struct {
-	ID           string   `json:"id"`
-	Name         string   `json:"name"`
-	User         User     `json:"user"`
-	Color        Color    `json:"color"`
-	Category     Category `json:"category"`
-	UnitPrice    uint     `json:"unitPrice"`
-	UnitsInStock uint     `json:"unitsInStock"`
-	ImagePaths   []string `json:"imagePaths"`
+	ID           string    `json:"id"`
+	Name         string    `json:"name"`
+	User         User      `json:"user"`
+	Color        *Color    `json:"color"`
+	Category     *Category `json:"category"`
+	UnitPrice    uint      `json:"unitPrice"`
+	UnitsInStock uint      `json:"unitsInStock"`
+	ImagePaths   []string  `json:"imagePaths"`
 }
 
 type ProductDTO struct {

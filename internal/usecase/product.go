@@ -4,7 +4,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/vmoltaemcrkonrgcechd/online-store/internal/entities"
 	"github.com/vmoltaemcrkonrgcechd/online-store/internal/usecase/repo"
-	"log"
 	"net/http"
 )
 
@@ -25,10 +24,6 @@ func (uc ProductUseCase) Add(product entities.ProductDTO) (string, error) {
 	}
 
 	if len(product.ImagePaths) != 0 {
-		log.Println(product.ImagePaths)
-		log.Println(len(product.ImagePaths))
-		log.Println(product.ImagePaths == nil)
-
 		if err = uc.repo.AddProductImages(id, product.ImagePaths); err != nil {
 			return "", fiber.NewError(http.StatusInternalServerError,
 				"продукт был добавлен но: "+err.Error())
@@ -36,4 +31,17 @@ func (uc ProductUseCase) Add(product entities.ProductDTO) (string, error) {
 	}
 
 	return id, nil
+}
+
+func (uc ProductUseCase) All() (entities.AllProductsDTO, error) {
+	result, err := uc.repo.All()
+	if err != nil {
+		return result, err
+	}
+
+	if result.Products == nil {
+		result.Products = make([]entities.Product, 0, 0)
+	}
+
+	return result, nil
 }

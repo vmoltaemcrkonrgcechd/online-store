@@ -44,12 +44,14 @@ func (r UserRepo) SaveUser(user entities.UserDTO) (id string, err error) {
 
 func (r UserRepo) UserByCredentials(credentials entities.Credentials) (
 	user entities.User, err error) {
+	var city struct{ ID, Name *string }
+
 	if err = r.Sq.Select("user_id", "username", "city_id", "city_name", "image_path", "role").
 		From("\"user\"").
 		Join("city USING (city_id)").
 		Where("username = ? AND password = ?", credentials.Username, credentials.Password).
-		QueryRow().Scan(&user.ID, &user.Username, &user.City.ID,
-		&user.City.Name, &user.ImagePath, &user.Role); err != nil {
+		QueryRow().Scan(&user.ID, &user.Username, &city.ID,
+		&city.Name, &user.ImagePath, &user.Role); err != nil {
 		if err == sql.ErrNoRows {
 			return user, fiber.NewError(http.StatusBadRequest,
 				"неправильный логин или пароль")
@@ -60,16 +62,22 @@ func (r UserRepo) UserByCredentials(credentials entities.Credentials) (
 			"произошла ошибка при входе в систему")
 	}
 
+	if city.ID != nil && city.Name != nil {
+		user.City = &entities.City{*city.ID, *city.Name}
+	}
+
 	return user, nil
 }
 
 func (r UserRepo) UserByID(id string) (user entities.User, err error) {
+	var city struct{ ID, Name *string }
+
 	if err = r.Sq.Select("user_id", "username", "city_id", "city_name", "image_path", "role").
 		From("\"user\"").
 		Join("city USING (city_id)").
 		Where("user_id = ?", id).
-		QueryRow().Scan(&user.ID, &user.Username, &user.City.ID,
-		&user.City.Name, &user.ImagePath, &user.Role); err != nil {
+		QueryRow().Scan(&user.ID, &user.Username, &city.ID,
+		&city.Name, &user.ImagePath, &user.Role); err != nil {
 		log.Println(err)
 
 		if err == sql.ErrNoRows {
@@ -79,6 +87,10 @@ func (r UserRepo) UserByID(id string) (user entities.User, err error) {
 
 		return user, fiber.NewError(http.StatusInternalServerError,
 			"произошла ошибка при получении пользователя")
+	}
+
+	if city.ID != nil && city.Name != nil {
+		user.City = &entities.City{*city.ID, *city.Name}
 	}
 
 	return user, nil

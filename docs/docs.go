@@ -129,6 +129,19 @@ const docTemplate = `{
             }
         },
         "/products": {
+            "get": {
+                "tags": [
+                    "продукты"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.AllProductsDTO"
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "продукты"
@@ -204,6 +217,20 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "entities.AllProductsDTO": {
+            "type": "object",
+            "properties": {
+                "products": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.Product"
+                    }
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
         "entities.Category": {
             "type": "object",
             "properties": {
@@ -248,6 +275,38 @@ const docTemplate = `{
                 }
             }
         },
+        "entities.Product": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "$ref": "#/definitions/entities.Category"
+                },
+                "color": {
+                    "$ref": "#/definitions/entities.Color"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "imagePaths": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "unitPrice": {
+                    "type": "integer"
+                },
+                "unitsInStock": {
+                    "type": "integer"
+                },
+                "user": {
+                    "$ref": "#/definitions/entities.User"
+                }
+            }
+        },
         "entities.ProductDTO": {
             "type": "object",
             "properties": {
@@ -273,6 +332,26 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "userID": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.User": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "$ref": "#/definitions/entities.City"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "imagePath": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }

@@ -16,11 +16,12 @@ func withProductRoutes(app *fiber.App,
 	uc usecase.ProductUseCase, store *sessionstore.SessionStore) {
 	r := productRoutes{uc}
 	app.Post("/products", store.Check("seller"), r.add)
+	app.Get("/products", store.Check("buyer"), r.all)
 }
 
-//	@tags	продукты
-//	@param	product	body	entities.ProductDTO	true	"продукт"
-//	@router	/products [post]
+// @tags	продукты
+// @param	product	body	entities.ProductDTO	true	"продукт"
+// @router	/products [post]
 func (r productRoutes) add(ctx *fiber.Ctx) error {
 	var product entities.ProductDTO
 
@@ -35,4 +36,16 @@ func (r productRoutes) add(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.Status(http.StatusCreated).SendString(id)
+}
+
+// @tags		продукты
+// @success	200	{object}	entities.AllProductsDTO
+// @router		/products [get]
+func (r productRoutes) all(ctx *fiber.Ctx) error {
+	result, err := r.uc.All()
+	if err != nil {
+		return err
+	}
+
+	return ctx.JSON(result)
 }
