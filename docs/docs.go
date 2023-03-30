@@ -146,6 +146,12 @@ const docTemplate = `{
                         "description": "смещение",
                         "name": "offset",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "сортировка",
+                        "name": "orderBy",
+                        "in": "query"
                     }
                 ],
                 "responses": {

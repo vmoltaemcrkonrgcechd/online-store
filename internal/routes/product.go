@@ -41,6 +41,7 @@ func (r productRoutes) add(ctx *fiber.Ctx) error {
 //	@tags		продукты
 //@param limit query int false "ограничение"
 //@param offset query int false "смещение"
+//@param orderBy query string false "сортировка"
 //	@success	200	{object}	entities.AllProductsDTO
 //	@router		/products [get]
 func (r productRoutes) all(ctx *fiber.Ctx) (err error) {

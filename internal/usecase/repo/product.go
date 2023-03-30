@@ -7,6 +7,7 @@ import (
 	"github.com/vmoltaemcrkonrgcechd/online-store/pkg/pg"
 	"log"
 	"net/http"
+	"strings"
 )
 
 type ProductRepo struct {
@@ -60,6 +61,10 @@ func (r ProductRepo) All(params entities.AllProductsQP) (result entities.AllProd
 		LeftJoin("color USING (color_id)").
 		LeftJoin("category USING (category_id)").
 		LeftJoin("product_image pi USING (product_id)")
+
+	if params.OrderBy != nil {
+		builder = builder.OrderBy(strings.Join(params.OrderBy, " "))
+	}
 
 	if params.Limit != 0 {
 		builder = builder.Limit(params.Limit)

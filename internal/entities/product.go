@@ -28,6 +28,7 @@ type AllProductsDTO struct {
 }
 
 type AllProductsQP struct {
-	Limit  uint64 `query:"limit"`
-	Offset uint64 `query:"offset"`
+	Limit   uint64   `query:"limit"`
+	Offset  uint64   `query:"offset"`
+	OrderBy []string `query:"orderBy"`
 }

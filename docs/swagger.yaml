@@ -187,6 +187,10 @@ paths:
         in: query
         name: offset
         type: integer
+      - description: сортировка
+        in: query
+        name: orderBy
+        type: string
       responses:
         "200":
           description: OK
