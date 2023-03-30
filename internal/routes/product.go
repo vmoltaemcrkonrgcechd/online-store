@@ -16,7 +16,7 @@ func withProductRoutes(app *fiber.App,
 	uc usecase.ProductUseCase, store *sessionstore.SessionStore) {
 	r := productRoutes{uc}
 	app.Post("/products", store.Check("seller"), r.add)
-	app.Get("/products", store.Check("buyer"), r.all)
+	app.Get("/products", r.all)
 }
 
 //	@tags	продукты
@@ -42,6 +42,8 @@ func (r productRoutes) add(ctx *fiber.Ctx) error {
 //@param limit query int false "ограничение"
 //@param offset query int false "смещение"
 //@param orderBy query string false "сортировка"
+//@param colors query string false "цвета"
+//@param categories query string false "категории"
 //	@success	200	{object}	entities.AllProductsDTO
 //	@router		/products [get]
 func (r productRoutes) all(ctx *fiber.Ctx) (err error) {

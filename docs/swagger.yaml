@@ -191,6 +191,14 @@ paths:
         in: query
         name: orderBy
         type: string
+      - description: цвета
+        in: query
+        name: colors
+        type: string
+      - description: категории
+        in: query
+        name: categories
+        type: string
       responses:
         "200":
           description: OK

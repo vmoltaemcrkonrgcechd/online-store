@@ -152,6 +152,18 @@ const docTemplate = `{
                         "description": "сортировка",
                         "name": "orderBy",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "цвета",
+                        "name": "colors",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "категории",
+                        "name": "categories",
+                        "in": "query"
                     }
                 ],
                 "responses": {

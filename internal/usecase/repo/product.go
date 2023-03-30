@@ -2,6 +2,7 @@ package repo
 
 import (
 	"database/sql"
+	sq "github.com/Masterminds/squirrel"
 	"github.com/gofiber/fiber/v2"
 	"github.com/vmoltaemcrkonrgcechd/online-store/internal/entities"
 	"github.com/vmoltaemcrkonrgcechd/online-store/pkg/pg"
@@ -51,15 +52,27 @@ func (r ProductRepo) AddProductImages(id string, imagePaths []string) error {
 }
 
 func (r ProductRepo) All(params entities.AllProductsQP) (result entities.AllProductsDTO, err error) {
+	var (
+		subQuery, query string
+		args            []any
+		rows            *sql.Rows
+	)
+
+	subBuilder := r.Sq.Select("count(*)").From("product").Prefix("(").Suffix(")")
+
+	subBuilder = r.addFilter(subBuilder, params)
+
+	if subQuery, _, err = subBuilder.ToSql(); err != nil {
+		log.Println(err)
+		return result, fiber.NewError(http.StatusInternalServerError,
+			"произошла ошибка при получении всех продуктов")
+	}
+
 	builder := r.Sq.Select("product_id", "product_name", "unit_price", "units_in_stock",
 		"color_id", "color_name", "category_id", "category_name",
 		"user_id", "username", "u.image_path", "role", "city_id", "city_name", "pi.image_path",
-		"(SELECT count(*) FROM product)").
-		From("product").
-		Join("\"user\" u USING (user_id)").
-		LeftJoin("city USING (city_id)").
-		LeftJoin("color USING (color_id)").
-		LeftJoin("category USING (category_id)").
+		subQuery).From("product").Join("\"user\" u USING (user_id)").LeftJoin("city USING (city_id)").
+		LeftJoin("color USING (color_id)").LeftJoin("category USING (category_id)").
 		LeftJoin("product_image pi USING (product_id)")
 
 	if params.OrderBy != nil {
@@ -74,15 +87,33 @@ func (r ProductRepo) All(params entities.AllProductsQP) (result entities.AllProd
 		builder = builder.Offset(params.Offset)
 	}
 
-	var rows *sql.Rows
+	builder = r.addFilter(builder, params)
 
-	if rows, err = builder.Query(); err != nil {
+	if query, args, err = builder.ToSql(); err != nil {
+		log.Println(err)
+		return result, fiber.NewError(http.StatusInternalServerError,
+			"произошла ошибка при получении всех продуктов")
+	}
+
+	if rows, err = r.DB.Query(query, args...); err != nil {
 		log.Println(err)
 		return result, fiber.NewError(http.StatusInternalServerError,
 			"произошла ошибка при получении всех продуктов")
 	}
 
 	return r.scanRows(rows)
+}
+
+func (r ProductRepo) addFilter(builder sq.SelectBuilder, params entities.AllProductsQP) sq.SelectBuilder {
+	if len(params.Colors) != 0 {
+		builder = builder.Where(sq.Eq{"color_id": params.Colors})
+	}
+
+	if len(params.Categories) != 0 {
+		builder = builder.Where(sq.Eq{"category_id": params.Categories})
+	}
+
+	return builder
 }
 
 func (r ProductRepo) scanRows(rows *sql.Rows) (result entities.AllProductsDTO, err error) {
