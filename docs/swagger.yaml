@@ -178,6 +178,15 @@ paths:
       - пользователи
   /products:
     get:
+      parameters:
+      - description: ограничение
+        in: query
+        name: limit
+        type: integer
+      - description: смещение
+        in: query
+        name: offset
+        type: integer
       responses:
         "200":
           description: OK

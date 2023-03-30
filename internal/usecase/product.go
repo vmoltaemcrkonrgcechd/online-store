@@ -33,8 +33,8 @@ func (uc ProductUseCase) Add(product entities.ProductDTO) (string, error) {
 	return id, nil
 }
 
-func (uc ProductUseCase) All() (entities.AllProductsDTO, error) {
-	result, err := uc.repo.All()
+func (uc ProductUseCase) All(params entities.AllProductsQP) (entities.AllProductsDTO, error) {
+	result, err := uc.repo.All(params)
 	if err != nil {
 		return result, err
 	}

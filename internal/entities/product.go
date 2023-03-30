@@ -26,3 +26,8 @@ type AllProductsDTO struct {
 
 	Quantity uint16 `json:"quantity"`
 }
+
+type AllProductsQP struct {
+	Limit  uint64 `query:"limit"`
+	Offset uint64 `query:"offset"`
+}

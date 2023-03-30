@@ -19,9 +19,9 @@ func withProductRoutes(app *fiber.App,
 	app.Get("/products", store.Check("buyer"), r.all)
 }
 
-// @tags	продукты
-// @param	product	body	entities.ProductDTO	true	"продукт"
-// @router	/products [post]
+//	@tags	продукты
+//	@param	product	body	entities.ProductDTO	true	"продукт"
+//	@router	/products [post]
 func (r productRoutes) add(ctx *fiber.Ctx) error {
 	var product entities.ProductDTO
 
@@ -38,12 +38,23 @@ func (r productRoutes) add(ctx *fiber.Ctx) error {
 	return ctx.Status(http.StatusCreated).SendString(id)
 }
 
-// @tags		продукты
-// @success	200	{object}	entities.AllProductsDTO
-// @router		/products [get]
-func (r productRoutes) all(ctx *fiber.Ctx) error {
-	result, err := r.uc.All()
-	if err != nil {
+//	@tags		продукты
+//@param limit query int false "ограничение"
+//@param offset query int false "смещение"
+//	@success	200	{object}	entities.AllProductsDTO
+//	@router		/products [get]
+func (r productRoutes) all(ctx *fiber.Ctx) (err error) {
+	var (
+		qp     entities.AllProductsQP
+		result entities.AllProductsDTO
+	)
+
+	if err = ctx.QueryParser(&qp); err != nil {
+		return fiber.NewError(http.StatusBadRequest,
+			"недействительные параметры")
+	}
+
+	if result, err = r.uc.All(qp); err != nil {
 		return err
 	}
 

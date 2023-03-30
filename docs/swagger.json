@@ -122,6 +122,20 @@
                 "tags": [
                     "продукты"
                 ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ограничение",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "смещение",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",

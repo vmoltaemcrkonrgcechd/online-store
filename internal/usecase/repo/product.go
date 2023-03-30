@@ -49,10 +49,8 @@ func (r ProductRepo) AddProductImages(id string, imagePaths []string) error {
 	return nil
 }
 
-func (r ProductRepo) All() (result entities.AllProductsDTO, err error) {
-	var rows *sql.Rows
-
-	if rows, err = r.Sq.Select("product_id", "product_name", "unit_price", "units_in_stock",
+func (r ProductRepo) All(params entities.AllProductsQP) (result entities.AllProductsDTO, err error) {
+	builder := r.Sq.Select("product_id", "product_name", "unit_price", "units_in_stock",
 		"color_id", "color_name", "category_id", "category_name",
 		"user_id", "username", "u.image_path", "role", "city_id", "city_name", "pi.image_path",
 		"(SELECT count(*) FROM product)").
@@ -61,8 +59,19 @@ func (r ProductRepo) All() (result entities.AllProductsDTO, err error) {
 		LeftJoin("city USING (city_id)").
 		LeftJoin("color USING (color_id)").
 		LeftJoin("category USING (category_id)").
-		LeftJoin("product_image pi USING (product_id)").
-		Query(); err != nil {
+		LeftJoin("product_image pi USING (product_id)")
+
+	if params.Limit != 0 {
+		builder = builder.Limit(params.Limit)
+	}
+
+	if params.Offset != 0 {
+		builder = builder.Offset(params.Offset)
+	}
+
+	var rows *sql.Rows
+
+	if rows, err = builder.Query(); err != nil {
 		log.Println(err)
 		return result, fiber.NewError(http.StatusInternalServerError,
 			"произошла ошибка при получении всех продуктов")
