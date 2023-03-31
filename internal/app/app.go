@@ -14,7 +14,11 @@ import (
 func Run(cfg *config.Config) error {
 	app := fiber.New()
 
-	app.Use(cors.New(cors.ConfigDefault))
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     "http://localhost:8080",
+		AllowMethods:     "GET,POST,HEAD,DELETE,PATCH",
+		AllowCredentials: true,
+	}))
 
 	pq, err := pg.New(cfg)
 	if err != nil {
