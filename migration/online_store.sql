@@ -64,6 +64,7 @@ CREATE TABLE product(
                         units_in_stock INTEGER NOT NULL,
                         color_id UUID DEFAULT NULL,
                         category_id UUID DEFAULT NULL,
+                        description TEXT NOT NULL,
                         PRIMARY KEY (product_id),
                         FOREIGN KEY (user_id)
                             REFERENCES "user" (user_id)

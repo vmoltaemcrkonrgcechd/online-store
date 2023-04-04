@@ -317,6 +317,9 @@ const docTemplate = `{
                 "color": {
                     "$ref": "#/definitions/entities.Color"
                 },
+                "description": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -347,6 +350,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "colorID": {
+                    "type": "string"
+                },
+                "description": {
                     "type": "string"
                 },
                 "imagePaths": {

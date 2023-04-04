@@ -42,6 +42,8 @@ definitions:
         $ref: '#/definitions/entities.Category'
       color:
         $ref: '#/definitions/entities.Color'
+      description:
+        type: string
       id:
         type: string
       imagePaths:
@@ -62,6 +64,8 @@ definitions:
       categoryID:
         type: string
       colorID:
+        type: string
+      description:
         type: string
       imagePaths:
         items:

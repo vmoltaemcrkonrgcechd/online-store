@@ -22,9 +22,9 @@ func NewProductRepo(pq *pg.PG) ProductRepo {
 func (r ProductRepo) Add(product entities.ProductDTO) (id string, err error) {
 	if err = r.Sq.Insert("product").
 		Columns("product_name", "user_id", "color_id",
-			"category_id", "unit_price", "units_in_stock").
+			"category_id", "unit_price", "units_in_stock", "description").
 		Values(product.Name, product.UserID, product.ColorID,
-			product.CategoryID, product.UnitPrice, product.UnitsInStock).
+			product.CategoryID, product.UnitPrice, product.UnitsInStock, product.Description).
 		Suffix("RETURNING product_id").QueryRow().Scan(&id); err != nil {
 		log.Println(err)
 		return "", fiber.NewError(http.StatusInternalServerError,
@@ -68,7 +68,7 @@ func (r ProductRepo) All(params entities.AllProductsQP) (result entities.AllProd
 			"произошла ошибка при получении всех продуктов")
 	}
 
-	builder := r.Sq.Select("product_id", "product_name", "unit_price", "units_in_stock",
+	builder := r.Sq.Select("product_id", "product_name", "unit_price", "units_in_stock", "description",
 		"color_id", "color_name", "category_id", "category_name",
 		"user_id", "username", "u.image_path", "role", "city_id", "city_name", "pi.image_path",
 		subQuery).From("product").Join("\"user\" u USING (user_id)").LeftJoin("city USING (city_id)").
@@ -126,7 +126,7 @@ func (r ProductRepo) scanRows(rows *sql.Rows) (result entities.AllProductsDTO, e
 
 	for rows.Next() {
 		if err = rows.Scan(&product.ID, &product.Name, &product.UnitPrice,
-			&product.UnitsInStock, &color.ID, &color.Name, &category.ID,
+			&product.UnitsInStock, &product.Description, &color.ID, &color.Name, &category.ID,
 			&category.Name, &product.User.ID, &product.User.Username,
 			&product.User.ImagePath, &product.User.Role, &city.ID,
 			&city.Name, &imagePath, &result.Quantity); err != nil {
